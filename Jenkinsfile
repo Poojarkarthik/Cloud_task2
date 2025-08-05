@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = 'karthikpoojar/mini-poll-app'  
-        EC2_HOST = 'ubuntu@51.20.250.80'                    
+        DOCKER_IMAGE = 'poojarkarthik/mini-poll-app'    // 🔁 Replace with your DockerHub image name
+        EC2_HOST = 'ubuntu@51.20.250.80'                 // 🔁 Replace with your EC2 public IP
     }
 
     stages {
@@ -27,7 +27,10 @@ pipeline {
 
         stage('Test') {
             steps {
-                sh './node_modules/.bin/mocha tests/*.test.js'
+                sh '''
+                    chmod +x ./node_modules/.bin/mocha
+                    ./node_modules/.bin/mocha tests/*.test.js
+                '''
             }
         }
 

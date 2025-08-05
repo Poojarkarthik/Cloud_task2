@@ -1,0 +1,20 @@
+{
+  "name": "mini-poll-app",
+  "version": "1.0.0",
+  "description": "A simple poll app with Node.js and Jenkins CI/CD",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "mocha tests/*.test.js"
+  },
+  "author": "Your Name",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.9",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "chai": "^4.3.7",
+    "mocha": "^10.2.0"
+  }
+}

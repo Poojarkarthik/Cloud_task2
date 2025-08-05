@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mini Poll App</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <h1>Vote your favorite option:</h1>
+    <form action="/vote" method="POST">
+        <% for (let option in votes) { %>
+            <label>
+                <input type="radio" name="option" value="<%= option %>"> <%= option %>
+            </label><br>
+        <% } %>
+        <button type="submit">Vote</button>
+    </form>
+
+    <h2>Results:</h2>
+    <ul>
+        <% for (let option in votes) { %>
+            <li><%= option %>: <%= votes[option] %> votes</li>
+        <% } %>
+    </ul>
+</body>
+</html>

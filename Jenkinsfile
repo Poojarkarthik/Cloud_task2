@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = 'poojarkarthik/mini-poll-app'    // 🔁 Replace with your DockerHub image name
+        DOCKER_IMAGE = 'mini-poll-app:latest/mini-poll-app'    // 🔁 Replace with your DockerHub image name
         EC2_HOST = 'ubuntu@51.20.250.80'                 // 🔁 Replace with your EC2 public IP
     }
 

@@ -1,10 +1,21 @@
 pipeline {
     agent any
 
+    environment {
+        DOCKER_IMAGE = 'karthikpoojar/mini-poll-app'  
+        EC2_HOST = 'ubuntu@51.20.250.80'                   
+    }
+
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/Poojarkarthik/Cloud_task2'
+                checkout([
+                    $class: 'GitSCM',
+                    branches: [[name: '*/main']],
+                    userRemoteConfigs: [[
+                        url: 'https://github.com/Poojarkarthik/Cloud_task2.git'
+                    ]]
+                ])
             }
         }
 
@@ -22,14 +33,33 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t mini-poll-app .'
+                sh "docker build -t $DOCKER_IMAGE ."
             }
         }
 
-        stage('Deploy') {
+        stage('Push Docker Image to DockerHub') {
             steps {
-                echo 'Deploy stage placeholder'
-                // Add deployment logic here (e.g., to AWS EC2)
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    sh '''
+                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                        docker push $DOCKER_IMAGE
+                    '''
+                }
+            }
+        }
+
+        stage('Deploy to EC2') {
+            steps {
+                sshagent(['ec2-ssh-key']) {
+                    sh '''
+                        ssh -o StrictHostKeyChecking=no $EC2_HOST '
+                            docker stop mini-poll-app || true &&
+                            docker rm mini-poll-app || true &&
+                            docker pull $DOCKER_IMAGE &&
+                            docker run -d -p 80:3000 --name mini-poll-app $DOCKER_IMAGE
+                        '
+                    '''
+                }
             }
         }
     }

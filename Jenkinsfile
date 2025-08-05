@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = 'karthikpoojar/mini-poll-app'  
-        EC2_HOST = 'ubuntu@51.20.250.80'                   
+        EC2_HOST = 'ubuntu@51.20.250.80'                    
     }
 
     stages {
@@ -27,7 +27,7 @@ pipeline {
 
         stage('Test') {
             steps {
-                sh 'npm test'
+                sh './node_modules/.bin/mocha tests/*.test.js'
             }
         }
 

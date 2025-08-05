@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/your-username/mini-poll-app.git'
+                git 'https://github.com/Poojarkarthik/Cloud_task2'
             }
         }
 
